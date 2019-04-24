@@ -1,0 +1,2 @@
+2019-04-25 00:12:17.934  INFO 546 --- [Thread-147] o.s.s.concurrent.ThreadPoolTaskExecutor  : Shutting down ExecutorService 'applicationTaskExecutor'
+2019-04-25 00:12:17.946  INFO 546 --- [Thread-147] com.alibaba.druid.pool.DruidDataSource   : {dataSource-14} closed
