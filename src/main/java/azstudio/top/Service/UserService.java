@@ -1,6 +1,7 @@
 package azstudio.top.Service;
 
 import azstudio.top.config.BackJSON;
+import azstudio.top.entity.OpeEntity.CaptainToMember;
 import azstudio.top.entity.group;
 import azstudio.top.entity.user;
 
@@ -28,4 +29,10 @@ public interface UserService {
     BackJSON getGroupList(String wx_id);
     //delete group;
     BackJSON deleteGroup(String wxId,int groupId);
+    //get group details
+    BackJSON getGroupDetails(group group);
+    //update group details
+    BackJSON updateGroupDetails(group group);
+    //delete group member;
+    BackJSON deleteGroupMember(CaptainToMember cm);
 }

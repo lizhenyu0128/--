@@ -1,5 +1,6 @@
 package azstudio.top.mapper;
 
+import azstudio.top.entity.OpeEntity.CaptainToMember;
 import azstudio.top.entity.group;
 import azstudio.top.entity.user;
 import org.apache.ibatis.annotations.*;
@@ -47,4 +48,22 @@ public interface UserMapper {
     //delete group by captain
     @Update("UPDATE t_group SET use_status=0 WHERE id = #{groupId} and group_creater=#{userId}")
     int deleteGroup(int userId,int groupId);
+
+    //get group details
+    @Select("SELECT * FROM t_group WHERE id= #{id} AND group_creater = #{groupCreater} AND use_status=1")
+    group getGroupDetails(group group);
+
+    //update group details
+    @UpdateProvider(type = UserMapperProvider.class,method = "updateGroupDetails")
+    int updataGroupDetails(group group);
+
+    //delete group member
+    @Delete("DELETE FROM t_group_memeber WHERE group_id=#{groupId} AND wx_id = #{wxId} AND member_type='组员'")
+    int  deleteGroupMember(CaptainToMember cm);
+    @Select("SELECT use_status FROM t_group WHERE id=#{id} AND group_creater=#{g}")
+    Integer checkgroup(int id,int g);
+
+    //get group member
+    @Select("SELECT a.*,b.user_head,b.user_name FROM t_group_memeber a LEFT JOIN t_user b ON a.wx_id = b.wx_id WHERE group_id=#{groupId}")
+   List< Map<String,Object>> getGroupMember(int groupId);
 }

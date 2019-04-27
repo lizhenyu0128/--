@@ -1,6 +1,7 @@
 package azstudio.top.Service;
 
 import azstudio.top.config.BackJSON;
+import azstudio.top.entity.OpeEntity.CaptainToMember;
 import azstudio.top.entity.group;
 import azstudio.top.entity.user;
 import azstudio.top.mapper.UserMapper;
@@ -103,6 +104,46 @@ public class UserServiceImpl implements UserService {
         if (userId == null)
             return new BackJSON(200, "ok", BackJSON.resMsg(0, "false"));
         if (userMapper.deleteGroup(userId, groupId) > 0) return new BackJSON(200, "ok", BackJSON.resMsg(0, "success"));
+        return new BackJSON(200, "ok", BackJSON.resMsg(0, "false"));
+    }
+
+    @Override
+    public BackJSON getGroupDetails(group group) {
+        if (group.getId() < 1 || group.getGroupCreater() < 1)
+            return new BackJSON(200, "ok", BackJSON.resMsg(0, "false"));
+        group g = userMapper.getGroupDetails(group);
+        Map<String,Object> res = (Map<String, Object>) JSON.toJSON(g);
+        if(g!=null){
+            List<Map<String, Object>> members = userMapper.getGroupMember(group.getId());
+            System.out.println(members);
+            System.out.println(res);
+            res.put("members",members);
+        }
+        return new BackJSON(200, "ok", res);
+    }
+
+    @Override
+    public BackJSON updateGroupDetails(group group) {
+        if (group.getId() < 1 || group.getGroupCreater() < 1)
+            return new BackJSON(200, "ok", BackJSON.resMsg(0, "false"));
+        else if (userMapper.updataGroupDetails(group) > 0)
+            return new BackJSON(200, "ok", BackJSON.resMsg(0, "success"));
+        return new BackJSON(200, "ok", BackJSON.resMsg(0, "false"));
+    }
+
+    @Override
+    public BackJSON deleteGroupMember(CaptainToMember cm) {
+        System.out.println(cm);
+        if (cm.getGroupId() < 1 || cm.getWxId() == null || cm.getGroupCreater() < 1)
+            return new BackJSON(200, "ok", BackJSON.resMsg(0, "false"));
+
+        Integer g = userMapper.checkgroup(cm.getGroupId(), cm.getGroupCreater());
+        System.out.println(g);
+        if(g==null||g<1)
+            return new BackJSON(200, "ok", BackJSON.resMsg(0, "false"));
+        else if (g>0 && userMapper.deleteGroupMember(cm) >0)
+            return new BackJSON(200, "ok", BackJSON.resMsg(0, "success"));
+
         return new BackJSON(200, "ok", BackJSON.resMsg(0, "false"));
     }
 }

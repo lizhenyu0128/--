@@ -20,29 +20,29 @@ public class DuridConfig {
 
 
 
-        //使能读取druid的yml配置
-        @Bean
-        @ConfigurationProperties(prefix = "spring.datasource")
-        public DruidDataSource druidDatasource(){
-            return new DruidDataSource();
-        }
+    //使能读取druid的yml配置
+    @Bean(initMethod = "init",destroyMethod = "close")
+    @ConfigurationProperties(prefix = "spring.datasource")
+    public DruidDataSource druidDatasource(){
+        return new DruidDataSource();
+    }
 
 
-        //配置监控
-        //配置一个管理后台的servlet
-        @Bean
-        public ServletRegistrationBean druidServlet() {
+    //配置监控
+    //配置一个管理后台的servlet
+    @Bean
+    public ServletRegistrationBean druidServlet() {
 
-            ServletRegistrationBean servletRegistrationBean = new ServletRegistrationBean(new StatViewServlet(), "/druid/*");
-            //登录查看信息的账号密码.
+        ServletRegistrationBean servletRegistrationBean = new ServletRegistrationBean(new StatViewServlet(), "/druid/*");
+        //登录查看信息的账号密码.
 
-            servletRegistrationBean.addInitParameter("loginUsername","admin");
+        servletRegistrationBean.addInitParameter("loginUsername","admin");
 
-            servletRegistrationBean.addInitParameter("loginPassword","123456");
-            return servletRegistrationBean;
-        }
+        servletRegistrationBean.addInitParameter("loginPassword","123456");
+        return servletRegistrationBean;
+    }
     //2 。配置一个web监控fileter
-     @Bean
+    @Bean
     public FilterRegistrationBean filterRegistrationBean(){
         FilterRegistrationBean bean = new FilterRegistrationBean();
         bean.setFilter(new WebStatFilter());
