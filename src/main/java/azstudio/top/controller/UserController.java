@@ -92,14 +92,16 @@ public class UserController {
     public BackJSON getGroupDetails(@RequestBody group group) {
         return userService.getGroupDetails(group);
     }
-    //  update group details
+
+    //  update group detailsF
     @PutMapping("/group/captain")
-    public BackJSON updateGroupDetails(@RequestBody group group){
+    public BackJSON updateGroupDetails(@RequestBody group group) {
         return userService.updateGroupDetails(group);
     }
+
     //  delete group member
     @DeleteMapping("/group/captainToMember")
-    public BackJSON deleteGroupMember(@RequestBody CaptainToMember cm){
+    public BackJSON deleteGroupMember(@RequestBody CaptainToMember cm) {
         return userService.deleteGroupMember(cm);
     }
     //  get group QR code

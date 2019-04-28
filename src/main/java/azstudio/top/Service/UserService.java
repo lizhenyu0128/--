@@ -5,6 +5,8 @@ import azstudio.top.entity.OpeEntity.CaptainToMember;
 import azstudio.top.entity.group;
 import azstudio.top.entity.user;
 
+import java.util.Map;
+
 /**
  * Author:
  * Data:2019-04-22 19:32
@@ -35,4 +37,8 @@ public interface UserService {
     BackJSON updateGroupDetails(group group);
     //delete group member;
     BackJSON deleteGroupMember(CaptainToMember cm);
+    //get QRcode
+    BackJSON getQRcode(Map<String, Object> par);
+    //decode QRcode
+    BackJSON decodeJoinQR(Map<String,String> code);
 }

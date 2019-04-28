@@ -1,20 +1,23 @@
 package azstudio.top.Service;
 
-import azstudio.top.config.BackJSON;
-import azstudio.top.entity.OpeEntity.CaptainToMember;
-import azstudio.top.entity.group;
-import azstudio.top.entity.user;
-import azstudio.top.mapper.UserMapper;
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONArray;
-import com.alibaba.fastjson.JSONObject;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
+        import azstudio.top.config.BackJSON;
+        import azstudio.top.config.DesUtil;
+        import azstudio.top.config.MD5;
+        import azstudio.top.entity.OpeEntity.CaptainToMember;
+        import azstudio.top.entity.group;
+        import azstudio.top.entity.user;
+        import azstudio.top.mapper.UserMapper;
+        import com.alibaba.fastjson.JSON;
+        import com.alibaba.fastjson.JSONArray;
+        import com.alibaba.fastjson.JSONObject;
+        import org.springframework.beans.factory.annotation.Autowired;
+        import org.springframework.stereotype.Service;
+        import org.springframework.transaction.annotation.Transactional;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+        import java.awt.image.RescaleOp;
+        import java.util.HashMap;
+        import java.util.List;
+        import java.util.Map;
 
 /**
  * Author:
@@ -33,8 +36,8 @@ public class UserServiceImpl implements UserService {
         user res = userMapper.getUserInfoByWxCode(wx_id);
         System.out.println(res);
         if (res == null)
-            return new BackJSON(200, "ok");
-        return new BackJSON(200, "ok", res);
+            return new BackJSON(200, "ok", BackJSON.resMsg(0, "false"));
+        return new BackJSON(200, "ok", BackJSON.resMsg(1, "success"));
     }
 
     @Override
@@ -112,12 +115,12 @@ public class UserServiceImpl implements UserService {
         if (group.getId() < 1 || group.getGroupCreater() < 1)
             return new BackJSON(200, "ok", BackJSON.resMsg(0, "false"));
         group g = userMapper.getGroupDetails(group);
-        Map<String,Object> res = (Map<String, Object>) JSON.toJSON(g);
-        if(g!=null){
+        Map<String, Object> res = (Map<String, Object>) JSON.toJSON(g);
+        if (g != null) {
             List<Map<String, Object>> members = userMapper.getGroupMember(group.getId());
             System.out.println(members);
             System.out.println(res);
-            res.put("members",members);
+            res.put("members", members);
         }
         return new BackJSON(200, "ok", res);
     }
@@ -139,11 +142,61 @@ public class UserServiceImpl implements UserService {
 
         Integer g = userMapper.checkgroup(cm.getGroupId(), cm.getGroupCreater());
         System.out.println(g);
-        if(g==null||g<1)
+        if (g == null || g < 1)
             return new BackJSON(200, "ok", BackJSON.resMsg(0, "false"));
-        else if (g>0 && userMapper.deleteGroupMember(cm) >0)
+        else if (g > 0 && userMapper.deleteGroupMember(cm) > 0)
             return new BackJSON(200, "ok", BackJSON.resMsg(0, "success"));
 
         return new BackJSON(200, "ok", BackJSON.resMsg(0, "false"));
+    }
+
+    @Override
+    public BackJSON getQRcode(Map<String, Object> par) {
+        if (par.get("id") == null || par.get("groupCreater") == null)
+            return new BackJSON(200, "ok", BackJSON.resMsg(0, "false"));
+        Integer id = (int) par.get("id");
+        Integer groupCreater = (int) par.get("groupCreater");
+        group group = new group();
+        group.setId(id);
+        group.setGroupCreater(groupCreater);
+        group groupDetails = userMapper.getGroupDetails(group);
+        if (groupDetails == null)
+            return new BackJSON(200, "ok", BackJSON.resMsg(0, "false"));
+        //Encrypt QR code
+        Map<String, Integer> enc = new HashMap<String, Integer>();
+        enc.put("id", id);
+        enc.put("groupCreater", groupCreater);
+        try {
+
+            Object encRes = DesUtil.encrypt(enc.toString());
+            return new BackJSON(200, "ok", encRes);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new BackJSON(200, "ok", BackJSON.resMsg(0, "false"));
+        }
+
+
+    }
+
+    @Override
+    public BackJSON decodeJoinQR(Map<String, String> code) {
+        if (code.get("wxId") == null || code.get("QRCode") == null)
+            return new BackJSON(200, "ok", BackJSON.resMsg(0, "false"));
+        String decode= DesUtil.decrypt(code.get("QRCode"));
+        System.out.println(decode);
+        //result of decryption
+        String id = decode.substring(4,decode.indexOf(","));
+        int idInt = Integer.parseInt(id);
+        String groupCreater =decode.substring(4+ id.length()+15,decode.indexOf("}"));
+        String wxId =  code.get("wxId");
+        System.out.println(wxId);
+        try {
+            if(userMapper.checkGroupMember(idInt,wxId)<1&&userMapper.joingroup(idInt,wxId,"组员")>0)
+                return new BackJSON(200, "ok", BackJSON.resMsg(0, "加入成功"));
+            return new BackJSON(200, "ok", BackJSON.resMsg(0, "false"));
+        }catch (Exception e){
+            return new BackJSON(200, "ok", BackJSON.resMsg(0, "false"));
+        }
     }
 }
