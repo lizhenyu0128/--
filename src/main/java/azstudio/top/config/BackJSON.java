@@ -18,14 +18,12 @@ public class BackJSON {
         this.code = code;
         this.msg = msg;
         this.data = data;
-        System.out.println(code+"=="+msg+"=="+data);
     }
 
     public BackJSON(int code, String msg) {
         super();
         this.code = code;
         this.msg = msg;
-        System.out.println(code+"=="+msg);
     }
 
     public BackJSON(int code) {
@@ -69,5 +67,14 @@ public class BackJSON {
         res.put("msg", msg);
         res.put("data", sdata);
         return res;
+    }
+
+    @Override
+    public String toString() {
+        return "BackJSON{" +
+                "code=" + code +
+                ", msg='" + msg + '\'' +
+                ", data=" + data +
+                '}';
     }
 }

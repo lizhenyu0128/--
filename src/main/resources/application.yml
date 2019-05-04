@@ -58,4 +58,4 @@ logging:
   #  level:
   #    az.top : trace
   #输入日志文件 可以指定完整的路径
-  file: springbootlog.log
+  # file: springbootlog.log

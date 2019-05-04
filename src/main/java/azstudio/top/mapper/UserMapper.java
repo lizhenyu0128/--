@@ -25,10 +25,10 @@ public interface UserMapper {
     @UpdateProvider(type = UserMapperProvider.class, method = "updataUserInfo")
     int updataUserInfo(user user);
 
-    @Insert("INSERT INTO t_user (user_name,user_phone,user_head,wx_id,create_time,use_status) VALUES(#{userName},#{userPhone},#{userHead},#{wxId},UNIX_TIMESTAMP(),1)")
+    @Insert("INSERT INTO t_user (user_name,user_phone,user_head,wx_id,create_time,use_status) VALUES(#{userName},#{userPhone},#{userHead},#{wxId},UNIX_TIMESTAMP(now()),1)")
     int addUser(user user);
 
-    @Insert("INSERT INTO t_group (group_name,group_creater,group_subject,group_introduction,create_time,use_status) VALUE(#{groupName},#{groupCreater},#{groupSubject},#{groupIntroduction},UNIX_TIMESTAMP(),1)")
+    @Insert("INSERT INTO t_group (group_name,group_creater,group_subject,group_introduction,create_time,use_status) VALUE(#{groupName},#{groupCreater},#{groupSubject},#{groupIntroduction},UNIX_TIMESTAMP(now()),1)")
     @Options(useGeneratedKeys = true,keyProperty = "id",keyColumn = "id")
     int newGroup(group group);
 
