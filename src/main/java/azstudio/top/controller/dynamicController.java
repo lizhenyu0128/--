@@ -29,7 +29,7 @@ public class dynamicController {
     }
 
     //3 get group friend's dynamic content 点赞数量 评论数量   评论列表
-    @GetMapping("/dynamic/{id}")
+    @GetMapping("/dynamic/id/{id}")
     public BackJSON getDyanmic(@PathVariable int id) {
 
         return dynamicService.getDynamic(id);
@@ -48,7 +48,7 @@ public class dynamicController {
         return dynamicService.addreply(dynamicReply);
     }
     //2 get group friend's dynamic list   点赞数量 评论数量 wx昵称 用户昵称 发表时间距离当前的时间戳
-    @GetMapping("/dynamics/{begin}/{size}")
+    @GetMapping("/dynamics/begin/{begin}/size/{size}")
     public BackJSON getAllDynamic(@PathVariable int begin, @PathVariable int size){
         return dynamicService.getAllDynamics(begin,size);
     }

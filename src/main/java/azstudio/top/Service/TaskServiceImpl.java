@@ -40,8 +40,8 @@ public class TaskServiceImpl implements TaskService {
 
     @Override
     public BackJSON getPublishedTask(int groupCreater) {
-        System.out.println( groupCreater);
-        List<Task> reslist = taskMapper.getOngoingTask( groupCreater);
+        System.out.println(groupCreater);
+        List<Task> reslist = taskMapper.getOngoingTask(groupCreater);
         System.out.println(reslist);
         String res = JSON.toJSONString(reslist);
         return new BackJSON(200, "ok", res);
@@ -49,10 +49,39 @@ public class TaskServiceImpl implements TaskService {
 
     @Override
     public BackJSON getAllTasks(int groupCreater) {
-        System.out.println(groupCreater);
+
+        HashMap<String, List<Task>> monthTasks = new HashMap<>();
+        monthTasks.put("ing", new ArrayList<>());
+        monthTasks.put("近一月", new ArrayList<>());
+        monthTasks.put("近两月", new ArrayList<>());
+        monthTasks.put("近三月", new ArrayList<>());
+        monthTasks.put("other", new ArrayList<>());
         List<Task> reslist = taskMapper.getAllTasksByGroupCreater(groupCreater);
-        String res = JSON.toJSONString(reslist);
-        return new BackJSON(200, "ok", res);
+        for (Task a : reslist) {
+            System.out.println(a);
+            Calendar cal = Calendar.getInstance();
+            cal.setTimeInMillis(a.getStartTime()*1000);
+            Integer month = cal.get(Calendar.MONTH) + 1; // 因为月是从0开始算起的，所以加个1
+            System.out.println("挡墙月份"+month);
+            ///
+            cal.setTimeInMillis( System.currentTimeMillis());
+            int todymonth = cal.get(Calendar.MONTH) + 1; // 因为月是从0开始算起的，所以加个1
+            System.out.println("近几个月"+(todymonth-month));
+            if (a.getEndTime() > a.getStartTime()) {
+                monthTasks.get("ing").add(a);
+            }
+            if (todymonth-month==1) {
+                monthTasks.get("近一月").add(a);
+            } else if (todymonth-month==2) {
+                monthTasks.get("近两月").add(a);
+            } else if (todymonth-month==3) {
+                monthTasks.get("近三月").add(a);
+            } else {
+                monthTasks.get("other").add(a);
+            }
+        }
+//        String res = JSON.toJSONString(monthTasks);
+        return new BackJSON(200, "ok", monthTasks.toString());
     }
 
     @Override
@@ -97,9 +126,9 @@ public class TaskServiceImpl implements TaskService {
 
     @Override
     public BackJSON getFirstPageHeadInfo(String wxId) {
-        int res1  = taskMapper.getNotReadCount(wxId);
-        HashMap<String ,Integer> res= new HashMap<>();
-        res.put("taskNotReadCount",res1);
+        int res1 = taskMapper.getNotReadCount(wxId);
+        HashMap<String, Integer> res = new HashMap<>();
+        res.put("taskNotReadCount", res1);
         return new BackJSON(200, "ok", res);
     }
 

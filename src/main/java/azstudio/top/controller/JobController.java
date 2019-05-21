@@ -29,21 +29,21 @@ public class JobController {
         return taskService.publishTask(task);
     }
     //Ongoing tasks
-    @GetMapping("/captain/Ongoing/{groupCreater}")
+    @GetMapping("/captain/Ongoing/groupCreaterid/{groupCreater}")
     public BackJSON CaptainGetTask(@PathVariable  int groupCreater){
         return taskService.getPublishedTask(groupCreater);
     }
     //get all tasks by group creater
-    @GetMapping("/captain/AllTasks/{groupCreater}")
+    @GetMapping("/captain/AllTasks/groupCreaterid/{groupCreater}")
     public BackJSON getAllTasks(@PathVariable  int groupCreater){
         return taskService.getAllTasks(groupCreater);
     }
     //fast page show Weekly task
-    @GetMapping("/firstPage/WeeklyTask/{wxId}")
+    @GetMapping("/firstPage/WeeklyTask/wxId/{wxId}")
     public BackJSON getWeeklyTask(@PathVariable String wxId ){
         return  taskService.getWeeklyTask(wxId);
     }
-    @GetMapping("/firstPage/headInfo/{wxId}")
+    @GetMapping("/firstPage/headInfo/wxId/{wxId}")
     public BackJSON getFirstPageHeadInfo(@PathVariable String wxId){
         return taskService.getFirstPageHeadInfo(wxId);
     }

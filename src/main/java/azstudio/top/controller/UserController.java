@@ -27,7 +27,7 @@ public class UserController {
     UserServiceImpl userService;
 
     //get user details
-    @GetMapping("/userInfo/{wxId}")
+    @GetMapping("/userInfo/wxId/{wxId}")
     public BackJSON getUserInfoByWxCode(@PathVariable String wxId) {
         return userService.getUserByWxCode(wxId);
     }
@@ -70,7 +70,7 @@ public class UserController {
     }
 
     // group list
-    @GetMapping("/group/{wxId}")
+    @GetMapping("/group/wxId/{wxId}")
     public BackJSON getGroupList(@PathVariable String wxId) {
         return userService.getGroupList(wxId);
     }

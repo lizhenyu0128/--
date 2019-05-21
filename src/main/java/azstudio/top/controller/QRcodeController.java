@@ -28,7 +28,7 @@ public class QRcodeController {
         return userService.getQRcode(id, groupCreater);
     }
     // decode join QRcode
-    @GetMapping("/joinGroup/{wxId}/{decode}")
+    @GetMapping("/joinGroup/wxId/{wxId}/decode/{decode}")
     public BackJSON decodeJoinQR(@PathVariable String wxId,@PathVariable String decode){
         return userService.decodeJoinQR(wxId,decode);
 
