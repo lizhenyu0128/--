@@ -15,22 +15,22 @@ import java.util.Map;
  */
 
 @RestController
-@RequestMapping("/test")
+@RequestMapping("/joincode")
 public class QRcodeController {
 
     @Autowired
     UserServiceImpl userService;
 
     // return MD5 join group QBcode
-    @PutMapping("/joinGroup")
-    public BackJSON joinGroup(@RequestBody Map<String, Object> par) {
-        HashMap<String, String> ss = new HashMap<>();
-        return userService.getQRcode(par);
+    @PutMapping("/joinGroup/{id}/{groupCreater}")
+    public BackJSON joinGroup(@PathVariable int id,@PathVariable int groupCreater) {
+
+        return userService.getQRcode(id, groupCreater);
     }
     // decode join QRcode
-    @GetMapping("/joinGroup")
-    public BackJSON decodeJoinQR(@RequestBody Map<String,String> par){
-        return userService.decodeJoinQR(par);
+    @GetMapping("/joinGroup/{wxId}/{decode}")
+    public BackJSON decodeJoinQR(@PathVariable String wxId,@PathVariable String decode){
+        return userService.decodeJoinQR(wxId,decode);
 
     }
 

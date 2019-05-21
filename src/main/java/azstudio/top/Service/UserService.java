@@ -32,13 +32,13 @@ public interface UserService {
     //delete group;
     BackJSON deleteGroup(String wxId,int groupId);
     //get group details
-    BackJSON getGroupDetails(group group);
+    BackJSON getGroupDetails(int id,int groupCreater);
     //update group details
     BackJSON updateGroupDetails(group group);
     //delete group member;
     BackJSON deleteGroupMember(CaptainToMember cm);
     //get QRcode
-    BackJSON getQRcode(Map<String, Object> par);
+    BackJSON getQRcode(int id,int groupCreater);
     //decode QRcode
-    BackJSON decodeJoinQR(Map<String,String> code);
+    BackJSON decodeJoinQR(String wxId,String Decode);
 }

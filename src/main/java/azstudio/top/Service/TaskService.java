@@ -18,10 +18,13 @@ public interface TaskService {
     public BackJSON publishTask(Task task);
 
     //published  task
-    public BackJSON getPublishedTask(group group);
+    public BackJSON getPublishedTask(int groupCreater);
 
     //get all tasks by group creater;
-    BackJSON getAllTasks(group group);
+    BackJSON getAllTasks(int groupCreater);
 
-    BackJSON getWeeklyTask(HashMap<String,String> wxId );
+    BackJSON getWeeklyTask(String wxId );
+
+    //get first page head info
+    BackJSON getFirstPageHeadInfo(String wxId);
 }

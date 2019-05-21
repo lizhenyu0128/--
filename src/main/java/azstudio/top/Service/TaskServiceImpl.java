@@ -39,27 +39,26 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
-    public BackJSON getPublishedTask(group group) {
-        System.out.println(group);
-        List<Task> reslist = taskMapper.getOngoingTask(group);
+    public BackJSON getPublishedTask(int groupCreater) {
+        System.out.println( groupCreater);
+        List<Task> reslist = taskMapper.getOngoingTask( groupCreater);
         System.out.println(reslist);
         String res = JSON.toJSONString(reslist);
         return new BackJSON(200, "ok", res);
     }
 
     @Override
-    public BackJSON getAllTasks(group group) {
-        System.out.println(group);
-        List<Task> reslist = taskMapper.getAllTasksByGroupCreater(group);
+    public BackJSON getAllTasks(int groupCreater) {
+        System.out.println(groupCreater);
+        List<Task> reslist = taskMapper.getAllTasksByGroupCreater(groupCreater);
         String res = JSON.toJSONString(reslist);
         return new BackJSON(200, "ok", res);
     }
 
     @Override
-    public BackJSON getWeeklyTask(HashMap<String, String> wxId) {
+    public BackJSON getWeeklyTask(String wxId) {
         Date date;
         long mongdayTime = getThisWeekMonday(new Date());
-        System.out.println("mongday+"+mongdayTime);
         HashMap<String, List<HashMap<String, Object>>> weeklyTasks = new HashMap<>();
         weeklyTasks.put("1", new ArrayList<>());
         weeklyTasks.put("2", new ArrayList<>());
@@ -68,50 +67,43 @@ public class TaskServiceImpl implements TaskService {
         weeklyTasks.put("5", new ArrayList<>());
         weeklyTasks.put("6", new ArrayList<>());
         weeklyTasks.put("7", new ArrayList<>());
-        System.out.println(wxId.get("wxId"));
-        List<HashMap<String, Object>> reslist = taskMapper.getWeeklyTasks(wxId.get("wxId"));
+        List<HashMap<String, Object>> reslist = taskMapper.getWeeklyTasks(wxId);
         for (HashMap<String, Object> entity : reslist) {
-            System.out.println(entity);
             Integer lt = (Integer) entity.get("start_time");
             //不是本周就走
-            if(lt-mongdayTime<0)
+            if (lt - mongdayTime < 0)
                 continue;
             date = new Date(lt.longValue());
             SimpleDateFormat dateFm = new SimpleDateFormat("EEEE");
             String currSun = dateFm.format(date);
-            System.out.println(currSun);
-            if (currSun.equals("星期日")) {
-                System.out.println("我是星期7");
+            if (currSun.equals("星期日"))
                 weeklyTasks.get("7").add(entity);
-            } else if (currSun.equals("星期六")) {
-                System.out.println("我是星期6");
+            else if (currSun.equals("星期六"))
                 weeklyTasks.get("6").add(entity);
-            } else if (currSun.equals("星期五")) {
-                System.out.println("我是星期5");
+            else if (currSun.equals("星期五"))
                 weeklyTasks.get("5").add(entity);
-            } else if (currSun.equals("星期四")) {
-                System.out.println("我是星期4");
+            else if (currSun.equals("星期四"))
                 weeklyTasks.get("4").add(entity);
-            } else if (currSun.equals("星期三")) {
+            else if (currSun.equals("星期三")) {
                 System.out.println("我是星期3");
                 weeklyTasks.get("3").add(entity);
-            } else if (currSun.equals("星期二")) {
-                System.out.println("我是星期2");
+            } else if (currSun.equals("星期二"))
                 weeklyTasks.get("2").add(entity);
-            } else if (currSun.equals("星期一")) {
-                System.out.println("我是星期1");
+            else if (currSun.equals("星期一"))
                 weeklyTasks.get("1").add(entity);
-            }
-
         }
-
-
-
-
         return new BackJSON(200, "ok", weeklyTasks);
     }
 
-    public static long getThisWeekMonday(Date date) {
+    @Override
+    public BackJSON getFirstPageHeadInfo(String wxId) {
+        int res1  = taskMapper.getNotReadCount(wxId);
+        HashMap<String ,Integer> res= new HashMap<>();
+        res.put("taskNotReadCount",res1);
+        return new BackJSON(200, "ok", res);
+    }
+
+    private static long getThisWeekMonday(Date date) {
         Calendar cal = Calendar.getInstance();
         cal.setTime(date);
         // 获得当前日期是一个星期的第几天
@@ -126,7 +118,7 @@ public class TaskServiceImpl implements TaskService {
         // 根据日历的规则，给当前日期减去星期几与一个星期第一天的差值
         cal.add(Calendar.DATE, cal.getFirstDayOfWeek() - day);
         long current = cal.getTime().getTime();
-        long zero = (current-(current+TimeZone.getDefault().getRawOffset())%(1000*3600*24))/1000;
+        long zero = (current - (current + TimeZone.getDefault().getRawOffset()) % (1000 * 3600 * 24)) / 1000;
         return zero;
     }
 }

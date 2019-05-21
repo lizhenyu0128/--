@@ -51,7 +51,7 @@ public interface UserMapper {
 
     //get group details
     @Select("SELECT * FROM t_group WHERE id= #{id} AND group_creater = #{groupCreater} AND use_status=1")
-    group getGroupDetails(group group);
+    group getGroupDetails(int id,int groupCreater);
 
     //update group details
     @UpdateProvider(type = UserMapperProvider.class,method = "updateGroupDetails")

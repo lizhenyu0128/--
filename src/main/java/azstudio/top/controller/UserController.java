@@ -27,9 +27,9 @@ public class UserController {
     UserServiceImpl userService;
 
     //get user details
-    @GetMapping("/userInfo")
-    public BackJSON getUserInfoByWxCode(@RequestBody HashMap<String, String> par) {
-        return userService.getUserByWxCode(par.get("wxId"));
+    @GetMapping("/userInfo/{wxId}")
+    public BackJSON getUserInfoByWxCode(@PathVariable String wxId) {
+        return userService.getUserByWxCode(wxId);
     }
 
     //update user details
@@ -70,9 +70,9 @@ public class UserController {
     }
 
     // group list
-    @GetMapping("/group")
-    public BackJSON getGroupList(@RequestBody HashMap<String, String> par) {
-        return userService.getGroupList(par.get("wxId"));
+    @GetMapping("/group/{wxId}")
+    public BackJSON getGroupList(@PathVariable String wxId) {
+        return userService.getGroupList(wxId);
     }
 
     /**
@@ -88,9 +88,9 @@ public class UserController {
     }
 
     //  group details
-    @GetMapping("/group/captain")
-    public BackJSON getGroupDetails(@RequestBody group group) {
-        return userService.getGroupDetails(group);
+    @GetMapping("/group/captain/{id}/{groupCreater}")
+    public BackJSON getGroupDetails(@PathVariable int id,@PathVariable int groupCreater) {
+        return userService.getGroupDetails(id,groupCreater);
     }
 
     //  update group detailsF

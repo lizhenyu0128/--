@@ -1,61 +1,58 @@
-##  激活某个配置文件，application-xxx.yml  yml还有---设置文档块   profiles设置文档快名字
-#spring:
-#  profiles:
-#    active:
-#      -
 ##开启debug模式，如果是true，控制台会输出未使用的自动配置类
-debug: false
-server:
-  port: 8081
-  ##配置字符
+#debug: false
+#server:
+#  port: 8081
+  ##  激活某个配置文件，application-xxx.yml  yml还有---设置文档块   profiles设置文档快名字
 spring:
-  ##配置静态资源文件夹的路径
-  #  resources:
-  #    static-locations:
-  #      - classpath:/hellow
-  ##配置字符集格式
-  http:
-    encoding:
-      enabled: true
-      charset: utf-8
-      force: true
-  ##热部署
-  devtools:
-    restart:
-      enabled: true
-  ##连接数据库
-  datasource:
-    username: root
-    password: root
-    driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/Week_Task?serverTimezone=UTC&useUnicoding=true&characterEncoding=utf-8&&useSSL=false&&serverTimezone=Asia/Shanghai
-    type: com.alibaba.druid.pool.DruidDataSource
-    ##druid的配置
-    #   数据源其他配置
-    initialSize: 5
-    minIdle: 5
-    maxActive: 20
-    maxWait: 60000
-    timeBetweenEvictionRunsMillis: 60000
-    minEvictableIdleTimeMillis: 300000
-    validationQuery: SELECT 1 FROM DUAL
-    testWhileIdle: true
-    testOnBorrow: false
-    testOnReturn: false
-    poolPreparedStatements: true
-    #   配置监控统计拦截的filters，去掉后监控界面sql无法统计，'wall'用于防火墙
-    filters: stat,wall
-    maxPoolPreparedStatementPerConnectionSize: 20
-    useGlobalDataSourceStat: true
-    connectionProperties: druid.stat.mergeSql=true;druid.stat.slowSqlMillis=500
-    ##开启驼峰映射
-mybatis:
-  configuration:
-    map-underscore-to-camel-case: true
-#日志
-logging:
-  #  日志等级
-  #  level:
-  #    az.top : trace
-  #输入日志文件 可以指定完整的路径
-  # file: springbootlog.log
+  profiles:
+    active: pro
+#  ##配置静态资源文件夹的路径
+#  #  resources:
+#  #    static-locations:
+#  #      - clas
+#      #  http:
+#      #    encoding:
+#      #      enabled: true
+#      #      charset: utf-8
+#      #      force: true
+#    #  ##热部署
+#    #  devtools:spath:/hellow
+#  ##配置字符集格式
+#    restart:
+#      enabled: true
+#  ##连接数据库
+#  datasource:
+#    username: root
+#    password: root
+#    driver-class-name: com.mysql.cj.jdbc.Driver
+#    url: jdbc:mysql://localhost:3306/Week_Task?serverTimezone=UTC&useUnicoding=true&characterEncoding=utf-8&&useSSL=false&&serverTimezone=Asia/Shanghai
+#    type: com.alibaba.druid.pool.DruidDataSource
+#    ##druid的配置
+#    #   数据源其他配置
+#    initialSize: 5
+#    minIdle: 5
+#    maxActive: 20
+#    maxWait: 60000
+#    timeBetweenEvictionRunsMillis: 60000
+#    minEvictableIdleTimeMillis: 300000
+#    validationQuery: SELECT 1 FROM DUAL
+#    testWhileIdle: true
+#    testOnBorrow: false
+#    testOnReturn: false
+#    poolPreparedStatements: true
+#    #   配置监控统计拦截的filters，去掉后监控界面sql无法统计，'wall'用于防火墙
+#    filters: stat,wall
+#    maxPoolPreparedStatementPerConnectionSize: 20
+#    useGlobalDataSourceStat: true
+#    connectionProperties: druid.stat.mergeSql=true;druid.stat.slowSqlMillis=500
+#    ##开启驼峰映射
+#mybatis:
+#  configuration:
+#    map-underscore-to-camel-case: true
+##日志
+#logging:
+##  日志等级
+##  level:
+##    az.top : trace
+##输入日志文件 可以指定完整的路径
+## file: springbootlog.log
